@@ -1,6 +1,6 @@
 streamlit
 python-dotenv
-openai
+openai==0.28
 easyocr
 python-docx
 faiss-cpu
