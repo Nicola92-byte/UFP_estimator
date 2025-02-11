@@ -1,45 +1,144 @@
+# import streamlit as st
+# import tempfile
+# import os
+# import Agente_logging as agent  # Importa il modulo dell'agente con logging
+#
+# # Imposta la configurazione della pagina e lo stile con toni di blu
+# st.set_page_config(page_title="Function Point Estimator", layout="wide")
+# st.markdown(
+#     """
+#     <style>
+#     body {
+#         background-color: #f0f8ff;
+#     }
+#     .main {
+#         background-color: #e6f2ff;
+#         padding: 20px;
+#         border-radius: 10px;
+#     }
+#     .stButton>button {
+#         background-color: #007acc;
+#         color: white;
+#         border-radius: 5px;
+#         border: none;
+#         padding: 10px 20px;
+#     }
+#     .stButton>button:hover {
+#         background-color: #005f99;
+#     }
+#     </style>
+#     """,
+#     unsafe_allow_html=True
+# )
+#
+# st.title("Function Point Estimator")
+# st.markdown(
+#     "Carica un file **.docx** per generare una Specifica Funzionale completa e stimare i Function Point secondo IFPUG.")
+#
+# # Caricamento del file DOCX tramite file uploader
+# uploaded_file = st.file_uploader("Scegli un file .docx", type=["docx"])
+#
+# if uploaded_file is not None:
+#     # Salva il file in una posizione temporanea
+#     with tempfile.NamedTemporaryFile(delete=False, suffix=".docx") as tmp_file:
+#         tmp_file.write(uploaded_file.getvalue())
+#         tmp_file_path = tmp_file.name
+#
+#     st.success("File caricato con successo!")
+#
+#     # Quando l'utente clicca il pulsante, chiama l'agente per elaborare il file
+#     if st.button("Elabora il file"):
+#         with st.spinner("Elaborazione in corso..."):
+#             try:
+#                 # Richiama la funzione run_agent definita in agente_logging.py
+#                 summary, spec = agent.run_agent(tmp_file_path)
+#                 st.markdown("### Sommario")
+#                 st.info(summary)
+#                 st.markdown("### Specifica Funzionale Generata")
+#                 st.write(spec)
+#             except Exception as e:
+#                 st.error(f"Si è verificato un errore: {e}")
+#
+#     # Dopo l'elaborazione, rimuove il file temporaneo
+#     os.remove(tmp_file_path)
 import streamlit as st
 import tempfile
 import os
 import Agente_logging as agent  # Importa il modulo dell'agente con logging
 
-# Imposta la configurazione della pagina e lo stile con toni di blu
-st.set_page_config(page_title="Function Point Estimator", layout="wide")
+# Imposta la configurazione della pagina con icona e layout
+st.set_page_config(page_title="Function Point Estimator", layout="wide", page_icon=":chart_with_upwards_trend:")
+
+# CSS personalizzato per uno stile accattivante (toni di blu) e header
 st.markdown(
     """
     <style>
+    /* Impostazioni di base */
     body {
         background-color: #f0f8ff;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     }
     .main {
         background-color: #e6f2ff;
         padding: 20px;
         border-radius: 10px;
     }
+    /* Stile dei pulsanti */
     .stButton>button {
         background-color: #007acc;
         color: white;
         border-radius: 5px;
         border: none;
         padding: 10px 20px;
+        font-size: 16px;
+        font-weight: 600;
     }
     .stButton>button:hover {
         background-color: #005f99;
+    }
+    /* Header e istruzioni */
+    .header {
+        text-align: center;
+        padding: 20px;
+    }
+    .instructions {
+        text-align: center;
+        font-size: 18px;
+        padding: 10px;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-st.title("Function Point Estimator")
+# Header: immagine e titolo
+st.markdown("<div class='header'>", unsafe_allow_html=True)
+st.image(
+    r"C:\Users\A395959\PycharmProjects\pyMilvus\img1_calcolo.png",
+    width=150)
+st.markdown("<h1>Function Point Estimator</h1>", unsafe_allow_html=True)
 st.markdown(
-    "Carica un file **.docx** per generare una Specifica Funzionale completa e stimare i Function Point secondo IFPUG.")
+    "<p style='font-size: 20px;'>Calcola i Function Point secondo gli standard IFPUG in modo semplice e intuitivo!</p>",
+    unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)
 
-# Caricamento del file DOCX tramite file uploader
+# Istruzioni con icona di calcolatrice
+st.markdown("<div class='instructions'>", unsafe_allow_html=True)
+st.markdown("""
+### Istruzioni:
+1. Carica un file **.docx** contenente l'Analisi Requisiti Utente (ARU).
+2. L'app genererà automaticamente una Specifica Funzionale (SF) completa.
+3. Verrà visualizzato un sommario e la stima dei Function Point.
+""", unsafe_allow_html=True)
+st.image(r"C:\Users\A395959\PycharmProjects\pyMilvus\img2_software.png",
+         width=80)
+st.markdown("</div>", unsafe_allow_html=True)
+
+# File uploader per il file DOCX
 uploaded_file = st.file_uploader("Scegli un file .docx", type=["docx"])
 
 if uploaded_file is not None:
-    # Salva il file in una posizione temporanea
+    # Salva il file in un percorso temporaneo
     with tempfile.NamedTemporaryFile(delete=False, suffix=".docx") as tmp_file:
         tmp_file.write(uploaded_file.getvalue())
         tmp_file_path = tmp_file.name
@@ -50,7 +149,6 @@ if uploaded_file is not None:
     if st.button("Elabora il file"):
         with st.spinner("Elaborazione in corso..."):
             try:
-                # Richiama la funzione run_agent definita in agente_logging.py
                 summary, spec = agent.run_agent(tmp_file_path)
                 st.markdown("### Sommario")
                 st.info(summary)
@@ -58,6 +156,5 @@ if uploaded_file is not None:
                 st.write(spec)
             except Exception as e:
                 st.error(f"Si è verificato un errore: {e}")
-
-    # Dopo l'elaborazione, rimuove il file temporaneo
+    # Rimuove il file temporaneo dopo l'elaborazione
     os.remove(tmp_file_path)
