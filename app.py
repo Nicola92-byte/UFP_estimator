@@ -114,7 +114,7 @@ st.markdown(
 # Header: immagine e titolo
 st.markdown("<div class='header'>", unsafe_allow_html=True)
 st.image(
-    r"C:\Users\A395959\PycharmProjects\pyMilvus\img1_calcolo.png",
+    r"img1_calcolo.png",
     width=150)
 st.markdown("<h1>Function Point Estimator</h1>", unsafe_allow_html=True)
 st.markdown(
@@ -130,7 +130,7 @@ st.markdown("""
 2. L'app genererà automaticamente una Specifica Funzionale (SF) completa.
 3. Verrà visualizzato un sommario e la stima dei Function Point.
 """, unsafe_allow_html=True)
-st.image(r"C:\Users\A395959\PycharmProjects\pyMilvus\img2_software.png",
+st.image(r"img2_software.png",
          width=80)
 st.markdown("</div>", unsafe_allow_html=True)
 
