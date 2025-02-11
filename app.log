@@ -1,0 +1,103 @@
+2025-02-11 09:20:12,956 - FP_Calc - INFO - Cache non trovata, leggo e chunko il PDF manuale.
+2025-02-11 09:20:12,957 - FP_Calc - INFO - Lettura del PDF: C:\Users\A395959\PycharmProjects\pyMilvus\Function_Point_calcManual.pdf
+2025-02-11 09:20:13,882 - FP_Calc - INFO - Suddiviso in 226 chunk.
+2025-02-11 09:20:13,884 - FP_Calc - INFO - Cache salvata in manual_chunks.pkl.
+2025-02-11 09:20:13,884 - FP_Calc - INFO - Caricamento del modello SentenceTransformer.
+2025-02-11 09:20:17,006 - FP_Calc - INFO - Caricamento FAISS index ed embeddings da file di cache.
+2025-02-11 09:20:17,007 - FP_Calc - INFO - Estrazione dei requisiti funzionali dal documento ARU.
+2025-02-11 09:21:15,793 - FP_Calc - INFO - Recupero contesto dal manuale tramite FAISS.
+2025-02-11 09:21:15,846 - FP_Calc - INFO - Tentativo 1 di generazione del documento SF.
+2025-02-11 09:21:48,132 - FP_Calc - INFO - Documento SF generato con successo.
+2025-02-11 09:21:48,132 - FP_Calc - INFO - STAMPA UN PICCOLO RIASSUNTO:
+2025-02-11 09:21:48,132 - FP_Calc - INFO - Il documento ARU descrive l'analisi dei requisiti per il progetto **"STL – Gestione Processi Valorizzazione e Logistica"**, parte dell'iniziativa **Onda 2024**, finalizzata all'estensione e aggiornamento del sistema STL. Questo sistema supporta la valorizzazione di componenti energetiche (logistica, costi, contratti) e la gestione degli ordini, integrandosi con archivi esterni (Magazzino, RFI, SII). Gli obiettivi principali includono l'ottimizzazione dei processi di calcolo, la gestione delle anagrafiche, la tracciabilità delle operazioni e la riduzione dei tempi di elaborazione.
+
+Il progetto, con una durata di 4 mesi, prevede rilasci incrementali e si concentra su requisiti funzionali (gestione parametri, anagrafiche, ordini, acquisizione dati, reportistica) e non funzionali (prestazioni, sicurezza, usabilità). Sono definiti archivi interni (Anagrafiche, Parametri, Ordini) ed esterni (Magazzino, SII), con volumi e attributi specifici. Particolare attenzione è data alla sicurezza (autenticazione, logging) e alla conformità GDPR per il trattamento dei dati personali.
+2025-02-11 09:26:19,468 - FP_Calc - INFO - Caricamento dei chunk dal file di cache: manual_chunks.pkl
+2025-02-11 09:26:19,469 - FP_Calc - INFO - Caricamento del modello SentenceTransformer.
+2025-02-11 09:26:22,442 - FP_Calc - INFO - Caricamento FAISS index ed embeddings da file di cache.
+2025-02-11 09:26:22,444 - FP_Calc - INFO - Estrazione dei requisiti funzionali dal documento ARU.
+2025-02-11 09:27:32,278 - FP_Calc - INFO - Recupero contesto dal manuale tramite FAISS.
+2025-02-11 09:27:32,320 - FP_Calc - INFO - Tentativo 1 di generazione del documento SF.
+2025-02-11 09:28:20,552 - FP_Calc - INFO - Documento SF generato con successo.
+2025-02-11 09:28:20,552 - FP_Calc - INFO - STAMPA UN PICCOLO RIASSUNTO:
+2025-02-11 09:28:20,552 - FP_Calc - INFO - Il documento ARU descrive il progetto **"STL – Gestione Processi Valorizzazione e Logistica"**, parte dell'iniziativa **Onda 2024**, finalizzata all'estensione e aggiornamento del sistema STL, utilizzato per la valorizzazione di componenti energetiche e la gestione logistica. Gli obiettivi principali includono l'ottimizzazione dei processi di calcolo, la gestione delle anagrafiche, l'integrazione con archivi esterni e il miglioramento della tracciabilità e delle prestazioni. Il progetto, della durata di 4 mesi, prevede rilasci incrementali e si concentra su funzionalità come la gestione di parametri, anagrafiche, ordini, acquisizione dati da file, reportistica e processi di verifica. Sono definiti requisiti funzionali (archivi interni/esterni, macro-funzionalità) e non funzionali (prestazioni, sicurezza, usabilità). Il sistema rispetta il GDPR e garantisce alta disponibilità e affidabilità.
+2025-02-11 09:29:06,680 - FP_Calc - INFO - Caricamento dei chunk dal file di cache: manual_chunks.pkl
+2025-02-11 09:29:06,681 - FP_Calc - INFO - Caricamento del modello SentenceTransformer.
+2025-02-11 09:29:09,497 - FP_Calc - INFO - Caricamento FAISS index ed embeddings da file di cache.
+2025-02-11 09:29:09,498 - FP_Calc - INFO - Estrazione dei requisiti funzionali dal documento ARU.
+2025-02-11 09:30:36,804 - FP_Calc - INFO - Recupero contesto dal manuale tramite FAISS.
+2025-02-11 09:30:36,835 - FP_Calc - INFO - Tentativo 1 di generazione del documento SF.
+2025-02-11 09:31:19,086 - FP_Calc - INFO - Documento SF generato con successo.
+2025-02-11 09:31:19,086 - FP_Calc - INFO - STAMPA UN PICCOLO RIASSUNTO:
+2025-02-11 09:31:19,086 - FP_Calc - INFO - Il documento ARU descrive l'analisi dei requisiti per il progetto **"STL – Gestione Processi Valorizzazione e Logistica"**, parte dell'iniziativa **Onda 2024**, finalizzata all'estensione e aggiornamento del sistema STL. Questo sistema supporta la valorizzazione di componenti energetiche (logistica, costi, contratti) e la gestione degli ordini, integrandosi con archivi esterni (Magazzino, RFI, SII). Gli obiettivi principali includono l'ottimizzazione dei processi di calcolo, la gestione delle anagrafiche, la tracciabilità delle operazioni e la riduzione dei tempi di elaborazione.
+
+Il progetto, con una durata di 4 mesi, prevede rilasci incrementali e si concentra su requisiti funzionali (gestione parametri, anagrafiche, ordini, acquisizione dati, reportistica) e non funzionali (prestazioni, sicurezza, usabilità). Sono definiti archivi interni (Anagrafiche, Parametri, Ordini) ed esterni (Magazzino, SII), con volumi e attributi specifici. Particolare attenzione è data alla sicurezza (autenticazione, logging) e alla conformità GDPR per il trattamento dei dati personali.
+2025-02-11 09:32:36,168 - FP_Calc - INFO - Caricamento dei chunk dal file di cache: manual_chunks.pkl
+2025-02-11 09:32:36,169 - FP_Calc - INFO - Caricamento del modello SentenceTransformer.
+2025-02-11 09:32:38,791 - FP_Calc - INFO - Caricamento FAISS index ed embeddings da file di cache.
+2025-02-11 09:32:38,792 - FP_Calc - INFO - Estrazione dei requisiti funzionali dal documento ARU.
+2025-02-11 09:34:04,413 - FP_Calc - INFO - Recupero contesto dal manuale tramite FAISS.
+2025-02-11 09:34:04,482 - FP_Calc - INFO - Tentativo 1 di generazione del documento SF.
+2025-02-11 09:34:55,353 - FP_Calc - INFO - Documento SF generato con successo.
+2025-02-11 09:34:55,353 - FP_Calc - INFO - STAMPA UN PICCOLO RIASSUNTO:
+2025-02-11 09:34:55,353 - FP_Calc - INFO - Il documento ARU descrive il progetto **"STL – Gestione Processi Valorizzazione e Logistica"**, parte dell'iniziativa **Onda 2024**, finalizzato all'estensione e aggiornamento del sistema STL, utilizzato per la gestione e il calcolo di componenti energetiche (logistica, costi, contratti) e operazioni sugli ordini. Gli obiettivi principali includono l'ottimizzazione dei processi di calcolo, la gestione delle anagrafiche, l'integrazione con archivi esterni e la tracciabilità delle operazioni. Il progetto, della durata di 4 mesi, prevede rilasci incrementali e si concentra su funzionalità come la gestione di parametri, anagrafiche, ordini, acquisizione dati da file, reportistica e processi di verifica. Sono definiti requisiti funzionali (archivi interni/esterni, macro-funzionalità) e non funzionali (prestazioni, sicurezza, usabilità). Il sistema rispetta il GDPR e garantisce alta disponibilità e affidabilità.
+2025-02-11 09:35:21,433 - FP_Calc - INFO - Caricamento dei chunk dal file di cache: manual_chunks.pkl
+2025-02-11 09:35:21,434 - FP_Calc - INFO - Caricamento del modello SentenceTransformer.
+2025-02-11 09:35:24,954 - FP_Calc - INFO - Caricamento FAISS index ed embeddings da file di cache.
+2025-02-11 09:35:24,955 - FP_Calc - INFO - Estrazione dei requisiti funzionali dal documento ARU.
+2025-02-11 09:36:42,271 - FP_Calc - INFO - Recupero contesto dal manuale tramite FAISS.
+2025-02-11 09:36:42,305 - FP_Calc - INFO - Tentativo 1 di generazione del documento SF.
+2025-02-11 09:37:30,664 - FP_Calc - INFO - Documento SF generato con successo.
+2025-02-11 09:37:30,664 - FP_Calc - INFO - STAMPA UN PICCOLO RIASSUNTO:
+2025-02-11 09:37:30,664 - FP_Calc - INFO - Il documento ARU descrive il progetto **"STL – Gestione Processi Valorizzazione e Logistica"**, parte dell'iniziativa **Onda 2024**, finalizzata all'estensione e aggiornamento del sistema STL, utilizzato per la gestione e il calcolo di componenti energetiche (logistica, costi, contratti) e operazioni sugli ordini. Gli obiettivi principali includono l'ottimizzazione dei processi di calcolo, la gestione delle anagrafiche, l'integrazione con archivi esterni e la tracciabilità delle operazioni. Il progetto, della durata di 4 mesi, prevede rilasci incrementali e si concentra su funzionalità come la gestione di parametri, anagrafiche, ordini, acquisizione dati da file, reportistica e processi di verifica/calcolo. Sono definiti requisiti funzionali (archivi interni/esterni, macro-funzionalità) e non funzionali (prestazioni, sicurezza, usabilità). Il sistema rispetta il GDPR e garantisce alta disponibilità, sicurezza e logging.
+2025-02-11 09:42:02,682 - FP_Calc - INFO - Caricamento dei chunk dal file di cache: manual_chunks.pkl
+2025-02-11 09:42:02,683 - FP_Calc - INFO - Caricamento del modello SentenceTransformer.
+2025-02-11 09:42:05,052 - FP_Calc - INFO - Caricamento FAISS index ed embeddings da cache.
+2025-02-11 09:42:05,053 - FP_Calc - INFO - Estrazione dei requisiti funzionali dal documento ARU.
+2025-02-11 09:43:14,390 - FP_Calc - INFO - Recupero contesto tramite FAISS.
+2025-02-11 09:43:41,763 - FP_Calc - INFO - Documento SF generato con successo.
+2025-02-11 09:43:41,763 - FP_Calc - INFO - Documento SF generato con successo.
+2025-02-11 09:44:59,383 - FP_Calc - INFO - Caricamento dei chunk dal file di cache: manual_chunks.pkl
+2025-02-11 09:44:59,384 - FP_Calc - INFO - Caricamento del modello SentenceTransformer.
+2025-02-11 09:45:03,623 - FP_Calc - INFO - Caricamento FAISS index ed embeddings da file di cache.
+2025-02-11 09:45:03,624 - FP_Calc - INFO - Estrazione dei requisiti funzionali dal documento ARU.
+2025-02-11 09:46:09,147 - FP_Calc - INFO - Recupero contesto dal manuale tramite FAISS.
+2025-02-11 09:46:09,185 - FP_Calc - INFO - Tentativo 1 di generazione del documento SF.
+2025-02-11 09:46:34,407 - FP_Calc - INFO - Documento SF generato con successo.
+2025-02-11 09:46:34,407 - FP_Calc - INFO - STAMPA UN PICCOLO RIASSUNTO:
+2025-02-11 09:46:34,407 - FP_Calc - INFO - Il documento ARU descrive il progetto **"STL – Gestione Processi Valorizzazione e Logistica"**, parte dell'iniziativa **Onda 2024**, finalizzato all'estensione e aggiornamento del sistema STL per la gestione di processi legati alla valorizzazione energetica, logistica e ordini. Gli obiettivi principali includono l'ottimizzazione dei processi di calcolo, la gestione delle anagrafiche, l'integrazione con archivi esterni e il miglioramento della tracciabilità e delle prestazioni. Il progetto, della durata di 4 mesi, prevede rilasci incrementali e si concentra su funzionalità come la gestione di parametri, anagrafiche, ordini, acquisizione dati da file, reportistica e verifiche con log di esito. Sono definiti requisiti funzionali (archivi interni/esterni, macro-funzionalità) e non funzionali (prestazioni, sicurezza, usabilità). Il sistema rispetta il GDPR e garantisce alta disponibilità e affidabilità.
+2025-02-11 09:48:29,561 - FP_Calc - INFO - Caricamento dei chunk dal file di cache: manual_chunks.pkl
+2025-02-11 09:48:29,562 - FP_Calc - INFO - Caricamento del modello SentenceTransformer.
+2025-02-11 09:48:32,118 - FP_Calc - INFO - Caricamento FAISS index ed embeddings da cache.
+2025-02-11 09:48:32,118 - FP_Calc - INFO - Estrazione dei requisiti funzionali dal documento ARU.
+2025-02-11 09:49:46,849 - FP_Calc - INFO - Recupero contesto tramite FAISS.
+2025-02-11 09:50:21,364 - FP_Calc - INFO - Documento SF generato con successo.
+2025-02-11 09:50:21,364 - FP_Calc - INFO - Documento SF generato con successo.
+2025-02-11 09:52:34,288 - FP_Calc - INFO - Caricamento dei chunk dal file di cache: manual_chunks.pkl
+2025-02-11 09:52:34,289 - FP_Calc - INFO - Caricamento del modello SentenceTransformer.
+2025-02-11 09:52:36,965 - FP_Calc - INFO - Caricamento FAISS index ed embeddings da cache.
+2025-02-11 09:52:36,966 - FP_Calc - INFO - Estrazione dei requisiti funzionali dal documento ARU.
+2025-02-11 09:53:49,088 - FP_Calc - INFO - Recupero contesto tramite FAISS.
+2025-02-11 09:54:37,717 - FP_Calc - INFO - Documento SF generato con successo.
+2025-02-11 09:54:37,717 - FP_Calc - INFO - Documento SF generato con successo.
+2025-02-11 09:59:22,936 - FP_Calc - INFO - Caricamento dei chunk dal file di cache: manual_chunks.pkl
+2025-02-11 09:59:22,937 - FP_Calc - INFO - Caricamento del modello SentenceTransformer.
+2025-02-11 09:59:25,710 - FP_Calc - INFO - Caricamento FAISS index ed embeddings da cache.
+2025-02-11 09:59:25,711 - FP_Calc - INFO - Estrazione dei requisiti funzionali dal documento ARU.
+2025-02-11 10:00:56,361 - FP_Calc - INFO - Recupero contesto tramite FAISS.
+2025-02-11 10:01:52,041 - FP_Calc - INFO - Documento SF generato con successo.
+2025-02-11 10:01:52,041 - FP_Calc - INFO - Documento SF generato con successo.
+2025-02-11 10:12:19,435 - FP_Calc - INFO - Caricamento dei chunk dal file di cache: manual_chunks.pkl
+2025-02-11 10:12:19,436 - FP_Calc - INFO - Caricamento del modello SentenceTransformer.
+2025-02-11 10:12:21,751 - FP_Calc - INFO - Caricamento FAISS index ed embeddings da cache.
+2025-02-11 10:12:21,752 - FP_Calc - INFO - Estrazione dei requisiti funzionali dal documento ARU.
+2025-02-11 10:14:03,808 - FP_Calc - INFO - Recupero contesto tramite FAISS.
+2025-02-11 10:15:04,245 - FP_Calc - INFO - Documento SF generato con successo.
+2025-02-11 10:15:04,245 - FP_Calc - INFO - Documento SF generato con successo.
+2025-02-11 10:19:06,079 - FP_Calc - INFO - Caricamento dei chunk dal file di cache: manual_chunks.pkl
+2025-02-11 10:19:06,080 - FP_Calc - INFO - Caricamento del modello SentenceTransformer.
+2025-02-11 10:19:08,304 - FP_Calc - INFO - Caricamento FAISS index ed embeddings da cache.
+2025-02-11 10:19:08,305 - FP_Calc - INFO - Estrazione dei requisiti funzionali dal documento ARU.
+2025-02-11 10:21:11,544 - FP_Calc - INFO - Recupero contesto tramite FAISS.
+2025-02-11 10:23:40,058 - FP_Calc - INFO - Documento SF generato con successo.
+2025-02-11 10:23:40,058 - FP_Calc - INFO - Documento SF generato con successo.
