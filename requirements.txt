@@ -1,7 +1,10 @@
 streamlit
 python-dotenv
 openai
+easyocr
+python-docx
 faiss-cpu
 sentence-transformers
 PyPDF2
 numpy
+
