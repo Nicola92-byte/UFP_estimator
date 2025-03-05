@@ -360,15 +360,12 @@ def run_agent(docx_path):
 
     logger.info("Estrazione requisiti dal docx.")
     req_text = get_functional_requirements(docx_path)
-    ufp_info, _, short_summary = parse_aru_docx(docx_path)
-
+    # Modifica l'unpacking: invece di "ufp_info, _, short_summary", usa:
+    ufp_info, short_summary = parse_aru_docx(docx_path)
     pre_analysis_txt = quick_pre_analysis(req_text)
 
     print("\n=== DEBUG ===")
     print(f"Manual Context: {manual_context}")
-    # print(f"Pre-Analysis: {pre_analysis_txt}")
-    # print(f"Functional Requirements:\n{req_text}")
-    # print(f"UFP Info:\n{ufp_info}")
 
     final_text = generate_fp_estimate_text_heuristics(
         requirements_text=req_text,
