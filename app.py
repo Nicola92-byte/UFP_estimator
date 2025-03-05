@@ -1,8 +1,7 @@
-
 import streamlit as st
 import tempfile
 import os
-import agente_calcolo as agent  # Importa il modulo dell'agente con calcolo
+import agente_calcolo as agent
 
 # Imposta la configurazione della pagina con icona e layout
 st.set_page_config(page_title="Function Point Estimator", layout="wide", page_icon=":chart_with_upwards_trend:")
@@ -66,10 +65,9 @@ st.markdown("""
 ### Istruzioni:
 1. Carica un file **.docx** contenente l'Analisi Requisiti Utente (ARU).
 2. L'app genererà automaticamente una Specifica Funzionale (SF) completa.
-3. Verrà visualizzato un sommario e la stima dei Function Point.
+3. Verrà visualizzato un sommario, la stima dei Function Point e informazioni aggiuntive (ufp_info).
 """, unsafe_allow_html=True)
-st.image(r"img2_software.png",
-         width=80)
+st.image(r"img2_software.png", width=80)
 st.markdown("</div>", unsafe_allow_html=True)
 
 # File uploader per il file DOCX
@@ -87,9 +85,12 @@ if uploaded_file is not None:
     if st.button("Elabora il file"):
         with st.spinner("Elaborazione in corso..."):
             try:
-                summary, spec = agent.run_agent(tmp_file_path)
+                # run_agent ora restituisce 3 valori: short_summary, final_text, ufp_info
+                summary, spec, ufp_info = agent.run_agent(tmp_file_path)
                 st.markdown("### Sommario")
                 st.info(summary)
+                st.markdown("### INFO UFP")
+                st.info(ufp_info)
                 st.markdown("### Specifica Funzionale Generata")
                 st.write(spec)
             except Exception as e:
