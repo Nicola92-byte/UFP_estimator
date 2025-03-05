@@ -1,3 +1,4 @@
+# agente_calcolo.py
 import os
 import re
 import pickle
@@ -376,21 +377,23 @@ def run_agent(docx_path):
         manual_context=manual_context
     )
 
-    return short_summary, final_text
+    return short_summary, final_text, ufp_info
 
 ###############################################################################
 # MAIN
 ###############################################################################
 if __name__ == "__main__":
     # Sostituisci con il percorso del file .docx da elaborare
-    docx_path = r"C:\Users\A395959\PycharmProjects\pyMilvus\ARU_dir\ARU-Mercato-Re-factoringDamas(Analisi&DesignSprint17-18)_20240725103817.490_X.docx"
+    # docx_path = r"C:\Users\A395959\PycharmProjects\pyMilvus\ARU_dir\ARU-Mercato-Re-factoringDamas(Analisi&DesignSprint17-18)_20240725103817.490_X.docx"
+    docx_path = docx_path = r"C:\Users\A395959\PycharmProjects\pyMilvus\ARU_dir\ARU -Inerzia 2.1 Evolutive 2022 Fase 1 20220331.docx"
 
-
-    summary, spec= run_agent(docx_path)
+    summary, spec, ufp_info= run_agent(docx_path)
 
     print("\n=== SHORT SUMMARY ARU ===\n")
     print(summary)
 
+    print("\n=== INFO UFP ===\n")
+    print(ufp_info)
 
     print("\n=== SPECIFICA FUNZIONALE + TABELLA UFP ===\n")
     print(spec)
