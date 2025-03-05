@@ -2,7 +2,7 @@
 import streamlit as st
 import tempfile
 import os
-import Agente_logging as agent  # Importa il modulo dell'agente con logging
+import agente_calcolo as agent  # Importa il modulo dell'agente con calcolo
 
 # Imposta la configurazione della pagina con icona e layout
 st.set_page_config(page_title="Function Point Estimator", layout="wide", page_icon=":chart_with_upwards_trend:")
