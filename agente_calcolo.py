@@ -1,4 +1,3 @@
-# agente_logging.py
 import os
 import re
 import pickle
@@ -12,7 +11,6 @@ from dotenv import load_dotenv
 
 # Le tue due funzioni di estrazione
 from estrazione_damas_wave import get_functional_requirements
-# from estrazione_dati_utili_wave import parse_aru_docx
 from estrazione_dati_utili_wave import parse_aru_docx
 
 ###############################################################################
@@ -48,7 +46,6 @@ def init_logger(log_file='app.log'):
     return logger
 
 logger = init_logger()
-
 
 ###############################################################################
 # Lettura PDF e FAISS
@@ -106,7 +103,6 @@ def get_manual_chunks(pdf_path="Function_Point_calcManual.pdf", chunk_size=500, 
             pickle.dump(c, f)
         return c
 
-
 ###############################################################################
 # Support: clamp Totale UFP e pre-analisi
 ###############################################################################
@@ -130,6 +126,29 @@ def quick_pre_analysis(req_text):
     rf_count = sum(1 for ln in lines if "RF" in ln)
     return f"Trovati {rf_count} requisiti con label 'RF'."
 
+###############################################################################
+# Nuove funzioni per il contesto Agile
+###############################################################################
+def is_agile_context(requirements_text):
+    """Verifica se nel testo sono presenti parole chiave di contesto Agile."""
+    agile_keywords = ['product backlog', 'sprint', 'agile', 'metodologia agile']
+    requirements_lower = requirements_text.lower()
+    return any(keyword in requirements_lower for keyword in agile_keywords)
+
+def adjust_ufp_for_agile(answer, requirements_text, reduction_factor=0.4):
+    """
+    Se il contesto è agile, riduce il valore 'Totale UFP' applicando il reduction_factor.
+    Per una riduzione del 60% il reduction_factor deve essere 0.4 (ossia mantieni il 40% del valore originale).
+    """
+    if is_agile_context(requirements_text):
+        pattern = r"Totale UFP\s*=\s*(\d+)"
+        match = re.search(pattern, answer)
+        if match:
+            original_ufp = int(match.group(1))
+            new_ufp = int(original_ufp * reduction_factor)
+            answer = re.sub(pattern, f"Totale UFP = {new_ufp}", answer)
+            logger.info(f"Contesto Agile rilevato. Riduzione UFP: da {original_ufp} a {new_ufp} (riduzione del 60%).")
+    return answer
 
 ###############################################################################
 # Funzione Principale di generazione (con EURIStiche)
@@ -200,87 +219,56 @@ def generate_fp_estimate_text_heuristics(requirements_text, ufp_info, pre_analys
     >3      Medio Alto   Alto
     """
 
-    # Ecco le regole "generiche" per non fondere funzionalità.
-    # Più generali, senza casi specifici come "Gestione Anagrafiche" o "File CSV".
+    # Regole generali per non fondere funzionalità
     heuristics = """
 Regole Generali di Separazione Funzionalità:
 1) Non unire MAI in un'unica voce funzioni distinte se i requisiti le menzionano separatamente (evita fusioni).
 2) Se ci sono più tipologie di input (file diversi, ecc.), enumerale come EI separati.
 3) Se ci sono più output (report, log, dashboard), enumerali come EO distinti.
 4) Non calcolare AFP.
-5) Elenca sempre tutti gli EI, EO, EQ, ILF, EIF specificando se sono EI, EO, EQ, ILF o EIF e specificando i rispettivi DET e FRT per gli EI, EO e EQ e i rispettivi DET e RET ILF e EIF
+5) Elenca sempre tutti gli EI, EO, EQ, ILF, EIF specificando se sono EI, EO, EQ, ILF o EIF e specificando i rispettivi DET e FRT per gli EI, EO e EQ e i rispettivi DET e RET ILF e EIF.
 6) Concludi con la tabella Markdown:
    ## Riepilogo e Calcolo Totale UFP
    | Tipo            | Nome | Complessità | Peso | Totale           |
    ...
-  
    **Totale UFP = X**
-7) Per la colonna Tipo l'ordine di elencazione deve essere sempre EI,EO,EQ, ILF, EIF
+7) Per la colonna Tipo l'ordine di elencazione deve essere sempre EI, EO, EQ, ILF, EIF.
 8) Se i requisiti non dicono che due funzioni siano la stessa, trattale come separate (evita "perdita di informazione").
 9) Mantieni un ordine coerente (EI, EO, EQ, ILF, EIF) ma senza unire funzioni.
-10) Se ci sono più EI, EO, EQ, ILF, EIF non devono mai essere considerati un'unico elemento, vanno sempre presi separati sia nel Report e Output del Sistema che nel Riepilogo e Calcolo Totale UFP
-11) Se l'ARU (o i requisiti) menziona più sorgenti esterne (ad esempio “Sorgente A”, “Sorgente B”...)
-    e l'utente/business le riconosce come sistemi/autori differenti con scopi e dati distinti,
-    allora tali sorgenti vanno sempre considerate come EIF separati.
-    Non fonderle mai in un unico EIF a meno che il documento non precisi espressamente
-    che si tratta di un unico archivio logico.
-12) "Se un requisito descrive più modalità o varianti di estrazione (ad esempio diverse tipologie di filtro, 
-    output, finalità o parametri significativi) che per l’utente si concretizzano in funzioni distinte, 
-    allora tali modalità vanno sempre classificate come EQ separate. 
-    Non unire mai estrazioni diverse in un’unica EQ, a meno che non venga esplicitamente detto 
-    che si tratta di un'unica funzione con un semplice parametro di input."
-13) Ogni procedura o flusso di acquisizione che riguardi fonti di dati differenti, obiettivi o anagrafiche diverse, o che avvenga in momenti/eventi separati, deve essere considerata una funzione elementare autonoma e pertanto classificata come un External Input (EI) separato. In nessun caso vanno unificate più acquisizioni in un unico EI, a meno che non si tratti esplicitamente di un’unica transazione con un unico trigger comune.
-14) “Ogni elaborazione o visualizzazione che presenti differenze significative ai fini del business o dell’utente (ad esempio calcoli specifici, logiche di formattazione, scopi di presentazione, input o parametri diversi, filtri, viste, layout, fasce temporali, destinazioni di output) deve essere sempre classificata come una transazione EO separata. Non è consentito riunire in un singolo EO funzioni che, dal punto di vista dell’utente, si manifestano come output differenti o con logiche/elaborazioni distinte.
+10) Se ci sono più EI, EO, EQ, ILF, EIF non devono mai essere considerati un'unica cosa, vanno sempre presi separati.
+11) Se l'ARU (o i requisiti) menziona più sorgenti esterne (es. “Sorgente A”, “Sorgente B”),
+    e l'utente/business le riconosce come sistemi/autori differenti, allora tali sorgenti vanno sempre considerate come EIF separati.
+12) Se un requisito descrive più modalità o varianti di estrazione, tali modalità vanno sempre classificate come EQ separate.
+13) Ogni flusso di acquisizione di dati differenti deve essere considerato un External Input (EI) separato.
+14) Ogni elaborazione o visualizzazione che presenti differenze significative deve essere classificata come una transazione EO separata.
+15) Ogni uscita che comporti calcoli deve essere considerata External Output (EO).
+    """
 
-In particolare, se un requisito descrive più modalità di output (ad es. un calcolo X e un calcolo Y che l’utente richiama separatamente, oppure viste/grafici diversi per eolico/fotovoltaico/COI, o ancora report differenziati per finalità), tali modalità costituiscono transazioni EO autonome e non vanno unificate, a meno che la documentazione non attesti esplicitamente che si tratta della stessa identica funzione con un semplice parametro aggiuntivo, privo di differenze di elaborazione o formattazione.”
-
-15)"Ogni uscita che comporti calcoli (somma, differenza, stima, formattazione per aree, colorazione, ecc.) deve essere considerata External Output (EO). Di conseguenza, la rappresentazione del fotovoltaico (rilevante + non rilevante) e l’heatmap eolica (con raggruppamento per province) costituiscono funzioni EO distinte e non vanno fuse con la semplice visualizzazione del COI, anch’essa un EO autonomo.”
-
-"""
-
-    # Questo blocco descrive la "struttura" 3-4 pagine + regole "dividi se supera token" + "integra info"
+    # Struttura richiesta
     request_structure = """
 Richiesta:
 1) Genera un documento di Specifica Funzionale (SF) completo (almeno 3-4 pagine) utile al calcolo dei Function Point (IFPUG), seguendo questa struttura:
    - Introduzione: contesto, obiettivi, committente, vincoli di pianificazione.
-   - Descrizione Generale del Sistema: ambito, utenti principali, interfacce con altri sistemi.
+   - Descrizione Generale del Sistema: ambito, utenti principali, interfacce.
    - Definizione dei Boundary del Sistema: confini interni ed esterni (ILF, EIF).
    - Requisiti Non Funzionali: prestazioni, sicurezza, usabilità, affidabilità, manutenibilità, portabilità.
-   - Regole di Business
-   - Eccezioni e Condizioni Speciali
+   - Regole di Business.
+   - Eccezioni e Condizioni Speciali.
    - Report e Output del Sistema: contenuto, formato, frequenza.
-   - Interfacce Utente
-   - Processi di Interfacciamento con Altri Sistemi
-   - Casi d'Uso e Scenari Operativi
-   - Dettagli sull'Architettura del Sistema
-   - Allegati e Appendici (Glossario, Diagrammi, Prototipi)
-   - Per ogni step, spiega come calcoli EI, EO, EQ (DET, FTR) e come consideri ILF/EIF (RET, DET).
+   - Interfacce Utente.
+   - Processi di Interfacciamento con altri sistemi.
+   - Casi d'Uso e Scenari Operativi.
+   - Dettagli sull'Architettura.
+   - Allegati e Appendici (Glossario, Diagrammi, Prototipi).
+   - Spiega come calcoli EI, EO, EQ (DET, FTR) e come consideri ILF/EIF (RET, DET).
 2) Se il contenuto supera la capacità di una singola risposta, dividilo in più parti.
 3) Integra le informazioni già estratte senza duplicazioni.
-4) Non menzionare gli AFP (Adjusted Function Points). Concludi con una tabella di calcolo UFP (EI, EO, EQ, ILF, EIF).
-5) Se i requisiti non dicono che due funzioni siano la stessa, trattale come separate (evita "perdita di informazione").
-6) Mantieni un ordine coerente (EI, EO, EQ, ILF, EIF) ma senza unire funzioni.
-7) Se ci sono più EI, EO, EQ, ILF, EIF non devono mai essere considerati un'unica cosa, vanno sempre presi separati sia nel Report e Output del Sistema che nel Riepilogo e Calcolo Totale UFP
-8) Se l'ARU (o i requisiti) menziona più sorgenti esterne (ad esempio “Sorgente A”, “Sorgente B”...)
-    e l'utente/business le riconosce come sistemi/autori differenti con scopi e dati distinti,
-    allora tali sorgenti vanno sempre considerate come EIF separati.
-    Non fonderle mai in un unico EIF a meno che il documento non precisi espressamente
-    che si tratta di un unico archivio logico.
-9) "Se un requisito descrive più modalità o varianti di estrazione (ad esempio diverse tipologie di filtro, 
-    output, finalità o parametri significativi) che per l’utente si concretizzano in funzioni distinte, 
-    allora tali modalità vanno sempre classificate come EQ separate. 
-    Non unire mai estrazioni diverse in un’unica EQ, a meno che non venga esplicitamente detto 
-    che si tratta di un'unica funzione con un semplice parametro di input."
-10) Ogni procedura o flusso di acquisizione che riguardi fonti di dati differenti, obiettivi o anagrafiche diverse, o che avvenga in momenti/eventi separati, deve essere considerata una funzione elementare autonoma e pertanto classificata come un External Input (EI) separato. In nessun caso vanno unificate più acquisizioni in un unico EI, a meno che non si tratti esplicitamente di un’unica transazione con un unico trigger comune.
-11) “Ogni elaborazione o visualizzazione che presenti differenze significative ai fini del business o dell’utente (ad esempio calcoli specifici, logiche di formattazione, scopi di presentazione, input o parametri diversi, filtri, viste, layout, fasce temporali, destinazioni di output) deve essere sempre classificata come una transazione EO separata. Non è consentito riunire in un singolo EO funzioni che, dal punto di vista dell’utente, si manifestano come output differenti o con logiche/elaborazioni distinte.
+4) Non menzionare AFP. Concludi con una tabella di calcolo UFP (EI, EO, EQ, ILF, EIF).
+5) Tratta come separate funzioni che non sono esplicitamente indicate come uguali.
+6) Mantieni l'ordine EI, EO, EQ, ILF, EIF.
+7) Concludi con la tabella in Markdown e "**Totale UFP = X**".
+    """
 
-In particolare, se un requisito descrive più modalità di output (ad es. un calcolo X e un calcolo Y che l’utente richiama separatamente, oppure viste/grafici diversi per eolico/fotovoltaico/COI, o ancora report differenziati per finalità), tali modalità costituiscono transazioni EO autonome e non vanno unificate, a meno che la documentazione non attesti esplicitamente che si tratta della stessa identica funzione con un semplice parametro aggiuntivo, privo di differenze di elaborazione o formattazione.”
-12) "Ogni uscita che comporti calcoli (somma, differenza, stima, formattazione per aree, colorazione, ecc.) deve essere considerata External Output (EO). Di conseguenza, la rappresentazione del fotovoltaico (rilevante + non rilevante) e l’heatmap eolica (con raggruppamento per province) costituiscono funzioni EO distinte e non vanno fuse con la semplice visualizzazione del COI, anch’essa un EO autonomo.”
-
-
-"""
-
-    # Mettiamo insieme i vari pezzi in un "prompt"
     prompt = f"""
 Sei un esperto di Function Point Analysis (IFPUG).
 
@@ -310,7 +298,7 @@ Alla fine:
 - Mostra il calcolo di EI, EO, EQ, ILF, EIF con DET/FTR, complessità, peso.
 - Produci la tabella in Markdown, seguita da "**Totale UFP = X**".
 - Niente AFP.
-"""
+    """
 
     messages = [
         {
@@ -328,11 +316,10 @@ Alla fine:
     ]
 
     try:
-        # Esegui la chiamata a OpenAI
         response = openai.ChatCompletion.create(
             engine=DEPLOYMENT_NAME,
             messages=messages,
-            max_tokens=4000,   # Aumenta se serve un testo più lungo
+            max_tokens=4000,
             temperature=0.0,
             top_p=1.0,
             presence_penalty=0.0,
@@ -340,9 +327,10 @@ Alla fine:
         )
         answer = response["choices"][0]["message"]["content"].strip()
 
-        # Se vuoi forzare un range di TOT UFP, es. [20..200], usa clamp_range_in_text
-        # (Assumendo che clamp_range_in_text sia definita altrove)
+        # Applica un clamp sul valore UFP se necessario (es. range 20-200)
         answer = clamp_range_in_text(answer, 20, 200)
+        # Se il contesto dei requisiti indica un approccio Agile, riduci il totale UFP del 60%
+        answer = adjust_ufp_for_agile(answer, requirements_text)
 
         return answer
 
@@ -350,18 +338,16 @@ Alla fine:
         logger.error(f"Errore generate_fp_estimate_text_heuristics: {e}")
         return "Errore nella generazione."
 
-
-
 ###############################################################################
 # Pipeline Principale
 ###############################################################################
 def run_agent(docx_path):
     """
     1) Carica e chunk PDF
-    2) build FAISS
-    3) Estrae requisiti .docx
-    4) Ottiene contesto
-    5) genera il testo con 'heuristics'
+    2) Costruisce l'indice FAISS
+    3) Estrae requisiti dal file .docx
+    4) Ottiene contesto dal manuale PDF
+    5) Genera il testo completo con euristiche
     """
     pdf_path = "Function_Point_calcManual.pdf"
     chunks = get_manual_chunks(pdf_path, 500, "manual_chunks.pkl")
@@ -383,7 +369,6 @@ def run_agent(docx_path):
     # print(f"Functional Requirements:\n{req_text}")
     # print(f"UFP Info:\n{ufp_info}")
 
-
     final_text = generate_fp_estimate_text_heuristics(
         requirements_text=req_text,
         ufp_info=ufp_info,
@@ -391,39 +376,21 @@ def run_agent(docx_path):
         manual_context=manual_context
     )
 
-
-
-
     return short_summary, final_text
-
-    # # ✅ Modifica per restituire TUTTE le variabili richieste
-    # return {
-    #     "pre_analysis_text": pre_analysis_txt,
-    #     "requirements_text": req_text,
-    #     "ufp_info": ufp_info,
-    #     "manual_context": manual_context,
-    #     "summary": short_summary,
-    #     "final_text": final_text
-    # }
-
 
 ###############################################################################
 # MAIN
 ###############################################################################
 if __name__ == "__main__":
-    # Sostituisci con il tuo file .docx
-    # docx_path = r"C:\Users\A395959\PycharmProjects\pyMilvus\ARU_inventate\aru_fittizia_GPT o1.docx"
-    # docx_path = r"C:\Users\A395959\PycharmProjects\pyMilvus\ARU_dir\ARU-Mercato-Re-factoringDamas(Analisi&DesignSprint17-18)_20240725103817.490_X.docx"
-    docx_path = r"C:\Users\A395959\PycharmProjects\pyMilvus\ARU_dir\ARU -Inerzia 2.1 Evolutive 2022 Fase 1 20220331.docx"
+    # Sostituisci con il percorso del file .docx da elaborare
+    docx_path = r"C:\Users\A395959\PycharmProjects\pyMilvus\ARU_dir\ARU-Mercato-Re-factoringDamas(Analisi&DesignSprint17-18)_20240725103817.490_X.docx"
 
-    summary, spec, ufp_info = run_agent(docx_path)
+
+    summary, spec= run_agent(docx_path)
 
     print("\n=== SHORT SUMMARY ARU ===\n")
     print(summary)
 
-  
+
     print("\n=== SPECIFICA FUNZIONALE + TABELLA UFP ===\n")
     print(spec)
-
-
-
