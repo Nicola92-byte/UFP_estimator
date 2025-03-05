@@ -394,7 +394,7 @@ def run_agent(docx_path):
 
 
 
-    return short_summary, final_text, ufp_info
+    return short_summary, final_text
 
     # # ✅ Modifica per restituire TUTTE le variabili richieste
     # return {
@@ -421,10 +421,7 @@ if __name__ == "__main__":
     print("\n=== SHORT SUMMARY ARU ===\n")
     print(summary)
 
-    print("\n=== UFP INFO ===\n")
-    print(ufp_info)
-
-
+  
     print("\n=== SPECIFICA FUNZIONALE + TABELLA UFP ===\n")
     print(spec)
 
